@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Gagalin";
+  src: url("./assets/fonts/Gagalin-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.flexc {
+  @apply flex justify-center items-center;
+}
+
+.transcenter {
+  @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+.transall {
+  @apply transition-all duration-100 ease-out;
+}
+
+.font-capriola {
+  font-family: Capriola, sans-serif;
+  font-weight: bolder;
+}
+
+.samting {
+  color: blue;
+}
