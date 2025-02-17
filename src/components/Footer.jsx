@@ -3,7 +3,9 @@ import React from "react";
 function Footer({ className }) {
   return (
     <>
-      <footer className={`p-5 text-center flexc bg-light shadow ${className}`}>
+      <footer
+        className={`font-capriola p-5 text-center flexc bg-light shadow ${className}`}
+      >
         <div>
           {" "}
           Icons made by{" "}
