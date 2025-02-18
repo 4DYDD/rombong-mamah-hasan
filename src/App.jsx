@@ -7,6 +7,8 @@ import Laptop from "./Laptop";
 
 import MobileView from "./components/mobile/MobileView";
 
+import brokoli from "./assets/img/brokoli.jpg";
+
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -14,31 +16,32 @@ function App() {
   const [isStarted, setIsStarted] = useState(false);
 
   const handleTouchStart = (event, ref) => {
-    if (isButtonDisabled) return;
+    if (isButtonDisabled == true) return;
+
+    ref.classList.add("!scale-x-[0.90]");
+    ref.classList.add("!scale-y-95");
+    ref.classList.add("!text-red-500");
 
     setIsStarted(true);
-
-    event.preventDefault(); // Tambahkan ini
-
-    ref.classList.add("!scale-95");
-    ref.classList.add("!text-red-500");
   };
 
   const handleTouchEnd = (event, ref, delayClick) => {
-    if (isButtonDisabled) return;
-    if (!isStarted) return;
-
-    event.preventDefault(); // Tambahkan ini
+    if (isButtonDisabled == true) return;
+    if (isStarted == false) return;
 
     setMenuOpen(!menuOpen);
 
-    setIsButtonDisabled(true); // Set tombol disabled
-    ref.classList.remove("!scale-95");
+    ref.classList.remove("!scale-x-[0.90]");
+    ref.classList.remove("!scale-y-95");
+
+    ref.classList.add("animate-squish");
     ref.classList.remove("!text-red-500");
 
     setIsStarted(false);
+    setIsButtonDisabled(true); // Set tombol disabled
 
     setTimeout(() => {
+      ref.classList.remove("animate-squish");
       setIsButtonDisabled(false); // Aktifkan tombol kembali
     }, delayClick);
   };
@@ -55,12 +58,24 @@ function App() {
           />
         </Mobile>
         <Laptop>
-          <MobileView
+          {/* <MobileView
             handleTouchStart={handleTouchStart}
             handleTouchEnd={handleTouchEnd}
             menuOpen={menuOpen}
             setMenuOpen={setMenuOpen}
-          />
+          /> */}
+
+          <div className="flex-col h-screen px-16 text-3xl font-bold text-center text-white bg-red-500 flexc">
+            <span>UNTUK UKURAN WEBSITE INI BELUM KU BUAT, LAGI MALASSS</span>
+            <br />
+            <br />
+            <div
+              style={{
+                backgroundImage: `url(${brokoli})`,
+              }}
+              className="bg-no-repeat bg-cover border-4 border-white rounded-lg bg-center px-[20rem] py-[12rem]"
+            ></div>
+          </div>
         </Laptop>
       </main>
     </>

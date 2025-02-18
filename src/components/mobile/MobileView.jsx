@@ -22,23 +22,17 @@ function MobileView({
           <div className="absolute select-none transcenter z-[3]">
             <button
               ref={menuButton}
-              onTouchStart={(event) => {
+              onPointerDown={(event) => {
                 handleTouchStart(event, menuButton.current);
               }}
-              onTouchEnd={(event) => {
-                handleTouchEnd(event, menuButton.current, 500);
+              onPointerUp={(event) => {
+                handleTouchEnd(event, menuButton.current, 200);
               }}
-              onMouseDown={(event) => {
-                handleTouchStart(event, menuButton.current);
-              }}
-              onMouseUp={(event) => {
-                handleTouchEnd(event, menuButton.current, 500);
-              }}
-              className="relative flex-col overflow-hidden scale-100 border-4 border-white rounded-full shadow-lg select-none text-light bg-primary size-48 flexc transall font-gagalin"
+              className="relative flex-col overflow-hidden scale-x-100 scale-y-100 rounded-full shadow select-none shadow-primary text-light bg-primary size-48 flexc transall font-gagalin"
             >
               {/* === TEXTNYA === */}
               <div
-                className={`opacity-100 bg-primary rounded-full size-full flexc flex-col transcenter transall !duration-500 ${
+                className={`opacity-100 bg-primary rounded-full size-full flexc flex-col transcenter transall ${
                   menuOpen && "!opacity-0"
                 }`}
               >
@@ -49,8 +43,8 @@ function MobileView({
 
               {/* === X NYA === */}
               <div
-                className={`text-[5rem] transall bg-primary rounded-full size-full flexc flex-col !duration-500 !ease-in-out rotate-[0deg] transcenter scale-0 ${
-                  menuOpen && "!scale-100 !rotate-[360deg]"
+                className={`text-[5rem] transall bg-primary rounded-full size-full flexc flex-col !ease-in-out transcenter scale-0 ${
+                  menuOpen && "!scale-100"
                 }`}
               >
                 <i className="fa-solid fa-xmark"></i>
@@ -63,15 +57,17 @@ function MobileView({
           {/* === MENU 1 === */}
           <div
             ref={theFrappe}
-            className={`transcenter transall !duration-300 z-[2] ${
-              menuOpen && "curve-down"
+            className={`transcenter !top-[72%] scale-0 transall z-[2] ${
+              menuOpen && "!scale-100"
             }`}
           >
             <button
               onClick={() => {
                 alert("menu minuman belum tersedia!");
               }}
-              className="relative overflow-hidden bg-white border-2 rounded-full shadow size-20 flexc border-primary"
+              className={`relative overflow-hidden bg-white rounded-full shadow size-20 flexc shadow-primary ${
+                menuOpen && "animate-squish-barbar"
+              }`}
             >
               <img
                 src={frappe}
