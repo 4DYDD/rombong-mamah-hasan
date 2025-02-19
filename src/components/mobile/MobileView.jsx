@@ -4,15 +4,46 @@ import frappe from "../../assets/img/frappe.png";
 
 import Mobile from "../../Mobile";
 import Footer from "../Footer";
+import Button from "../button/Button";
 
-function MobileView({
-  handleTouchStart,
-  handleTouchEnd,
-  menuOpen,
-  setMenuOpen,
-}) {
-  const menuButton = useRef(null);
-  const theFrappe = useRef(null);
+function MobileView() {
+  const [showIce, setShowIce] = useState(false);
+  let menuOpenIce = null;
+  let setMenuOpenIce = null;
+
+  // const theFrappe = useRef(null);
+  // const frappeButton = useRef(null);
+
+  const theIce = useRef(null);
+
+  function munculkan(ref) {
+    setShowIce(!showIce);
+    ref?.classList.add("animate-squish-barbar");
+
+    setTimeout(() => {
+      ref?.classList.remove("animate-squish-barbar");
+    }, 120);
+  }
+
+  function sembunyikan(ref) {
+    ref?.classList.add("animate-squish-barbar-reverse");
+
+    setTimeout(() => {
+      setShowIce(!showIce);
+      ref?.classList.remove("animate-squish-barbar-reverse");
+
+      setMenuOpenIce(false);
+    }, 120);
+  }
+
+  function handleShowIce(ref) {
+    if (!showIce) {
+      munculkan(ref);
+    } else {
+      sembunyikan(ref);
+      console.log(theIce);
+    }
+  }
 
   return (
     <>
@@ -20,53 +51,88 @@ function MobileView({
         <section className="flex-[5] flexc relative">
           {/* === TOMBOL MENU === */}
           <div className="absolute select-none transcenter z-[3]">
-            <button
-              ref={menuButton}
-              onPointerDown={(event) => {
-                handleTouchStart(event, menuButton.current);
+            <Button
+              buttonOpen={
+                <>
+                  <div className="text-4xl">Rombong</div>
+                  <div className="text-xl">Mamah Hasan</div>
+                </>
+              }
+              buttonClose={
+                <>
+                  <i className="fa-solid fa-xmark"></i>
+                </>
+              }
+              clicked={(samting) => {
+                handleShowIce(theIce.current);
               }}
-              onPointerUp={(event) => {
-                handleTouchEnd(event, menuButton.current, 200);
-              }}
-              className="relative flex-col overflow-hidden scale-x-100 scale-y-100 rounded-full shadow select-none shadow-primary text-light bg-primary size-48 flexc transall font-gagalin"
-            >
-              {/* === TEXTNYA === */}
-              <div
-                className={`opacity-100 bg-primary rounded-full size-full flexc flex-col transcenter transall ${
-                  menuOpen && "!opacity-0"
-                }`}
-              >
-                <div className="text-4xl">Rombong</div>
-                <div className="text-xl">Mamah Hasan</div>
-              </div>
-              {/* === TEXTNYA === */}
+            />
 
-              {/* === X NYA === */}
-              <div
-                className={`text-[5rem] transall bg-primary rounded-full size-full flexc flex-col !ease-in-out transcenter scale-0 ${
-                  menuOpen && "!scale-100"
-                }`}
-              >
-                <i className="fa-solid fa-xmark"></i>
-              </div>
-              {/* === X NYA === */}
-            </button>
+            {/* {showIce && ( */}
+            <div
+              className={`size-[6rem] transcenter transall hidden !top-[140%] scale-0 ${
+                showIce && "!block !scale-100"
+              }`}
+            >
+              <Button
+                theRef={theIce}
+                className={`size-full`}
+                buttonOpen={
+                  <>
+                    <div className="p-4 text-center bg-white rounded-full select-none flexc size-full transcenter">
+                      <img
+                        src={frappe}
+                        alt="LOGONYA"
+                        className="pointer-events-none select-none size-full"
+                      />
+                    </div>
+                  </>
+                }
+                buttonClose={
+                  <>
+                    <div className="p-4 text-center rotate-180 bg-white rounded-full select-none flexc size-full transcenter">
+                      <img
+                        src={frappe}
+                        alt="LOGONYA"
+                        className="pointer-events-none select-none size-full"
+                      />
+                    </div>
+                  </>
+                }
+                clicked={({ menuOpen, setMenuOpen }) => {
+                  menuOpenIce = menuOpenIce || menuOpen;
+                  setMenuOpenIce = setMenuOpenIce || setMenuOpen;
+                }}
+              />
+            </div>
+            {/* )} */}
           </div>
           {/* === TOMBOL MENU === */}
 
           {/* === MENU 1 === */}
-          <div
+
+          {/* <div
             ref={theFrappe}
-            className={`transcenter !top-[72%] scale-0 transall z-[2] ${
-              menuOpen && "!scale-100"
+            className={`transcenter flex !top-[75%] transall z-[2] opacity-0 ${
+              menuOpen && "!opacity-100"
             }`}
           >
             <button
-              onClick={() => {
-                alert("menu minuman belum tersedia!");
+              ref={frappeButton}
+              onPointerDown={(event) => {
+                handleTouchStart(event, [frappeButton.current]);
+                setMenuOpen(true);
               }}
-              className={`relative overflow-hidden bg-white rounded-full shadow size-20 flexc shadow-primary ${
-                menuOpen && "animate-squish-barbar"
+              onPointerLeave={(event) => {
+                handleTouchLeave(event, [frappeButton.current], 200);
+                setMenuOpen(true);
+              }}
+              onPointerUp={(event) => {
+                handleTouchEnd(event, [frappeButton.current], 200);
+                setMenuOpen(true);
+              }}
+              className={`relative transall overflow-hidden bg-white rounded-full shadow size-20 flexc shadow-primary ${
+                menuOpen && ""
               }`}
             >
               <img
@@ -75,7 +141,8 @@ function MobileView({
                 className="text-center transcenter size-14"
               />
             </button>
-          </div>
+          </div> */}
+
           {/* === MENU 1 === */}
         </section>
 

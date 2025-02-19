@@ -69,6 +69,13 @@
   animation-duration: 150ms;
   animation-fill-mode: forwards;
 }
+.animate-squish-barbar-reverse {
+  will-change: transform;
+  animation-name: animate-squish-barbar;
+  animation-duration: 150ms;
+  animation-fill-mode: forwards;
+  animation-direction: reverse;
+}
 .animate-squish-kalem {
   will-change: transform;
   animation-name: animate-squish-kalem;
