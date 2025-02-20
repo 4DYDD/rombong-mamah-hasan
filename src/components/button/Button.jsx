@@ -1,10 +1,29 @@
 import React, { useState, useRef, useEffect } from "react";
 
-function Button({ theRef, buttonOpen, buttonClose, clicked, className }) {
+function Button({
+  theRef,
+  buttonOpen,
+  buttonClose,
+  get = null,
+  clicked,
+  className,
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const [isStarted, setIsStarted] = useState(false);
+
+  useEffect(() => {
+    if (get !== null)
+      get({
+        menuOpen,
+        setMenuOpen,
+        isButtonDisabled,
+        setIsButtonDisabled,
+        isStarted,
+        setIsStarted,
+      });
+  }, [get]);
 
   const animateStart = (ref) => {
     ref.forEach((element) => {
@@ -114,8 +133,8 @@ function Button({ theRef, buttonOpen, buttonClose, clicked, className }) {
       >
         {/* === TEXTNYA === */}
         <div
-          className={`opacity-100 select-none bg-primary rounded-full size-full flexc flex-col transcenter transall ${
-            menuOpen && "!opacity-0"
+          className={`select-none bg-primary rounded-full size-full flexc flex-col transcenter transall opacity-100 scale-100 ${
+            menuOpen && "!opacity-0 !scale-0"
           }`}
         >
           {buttonOpen || (
@@ -128,8 +147,8 @@ function Button({ theRef, buttonOpen, buttonClose, clicked, className }) {
 
         {/* === X NYA === */}
         <div
-          className={`text-[5rem] select-none transall bg-primary rounded-full size-full flexc flex-col !ease-in-out transcenter scale-0 ${
-            menuOpen && "!scale-100"
+          className={`text-[5rem] select-none transall bg-primary rounded-full size-full flexc flex-col !ease-in-out transcenter opacity-0 scale-0 ${
+            menuOpen && "!scale-100 !opacity-100"
           }`}
         >
           {buttonClose || (

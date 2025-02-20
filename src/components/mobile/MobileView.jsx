@@ -1,20 +1,30 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import frappe from "../../assets/img/frappe.png";
+import cupcake from "../../assets/img/cupcake.png";
 
 import Mobile from "../../Mobile";
 import Footer from "../Footer";
 import Button from "../button/Button";
+import IceLibrary from "../IceLibrary";
 
 function MobileView() {
   const [showIce, setShowIce] = useState(false);
-  let menuOpenIce = null;
+  const [menuList, setMenuList] = useState("idle");
+
+  let menuOpenMB = null;
+
   let setMenuOpenIce = null;
+  let setMenuOpenCupCake = null;
+  let setMenuOpenMB = null;
+  let setIsButtonDisabledMB = null;
 
-  // const theFrappe = useRef(null);
-  // const frappeButton = useRef(null);
-
+  const theMenuButton = useRef(null);
   const theIce = useRef(null);
+  const theCupCake = useRef(null);
+
+  const thePrevious = useRef(null);
+  const theNext = useRef(null);
 
   function munculkan(ref) {
     setShowIce(!showIce);
@@ -33,15 +43,15 @@ function MobileView() {
       ref?.classList.remove("animate-squish-barbar-reverse");
 
       setMenuOpenIce(false);
+      setMenuOpenCupCake(false);
     }, 120);
   }
 
-  function handleShowIce(ref) {
+  function handleToggle(ref) {
     if (!showIce) {
       munculkan(ref);
     } else {
       sembunyikan(ref);
-      console.log(theIce);
     }
   }
 
@@ -52,34 +62,133 @@ function MobileView() {
           {/* === TOMBOL MENU === */}
           <div className="absolute select-none transcenter z-[3]">
             <Button
+              className={`rotate-0 ${menuList == "listIce" && "!size-60"}`}
+              theRef={theMenuButton}
               buttonOpen={
                 <>
-                  <div className="text-4xl">Rombong</div>
-                  <div className="text-xl">Mamah Hasan</div>
+                  {menuList == "idle" && (
+                    <>
+                      <div className="text-4xl">Rombong</div>
+                      <div className="text-xl">Mamah Hasan</div>
+                    </>
+                  )}
+                  {menuList == "listIce" && (
+                    <>
+                      <div
+                        className={`p-11 text-center bg-white rounded-full select-none text-primary flexc size-full transall transcenter rotate-0`}
+                      >
+                        <IceLibrary />
+                      </div>
+                    </>
+                  )}
                 </>
               }
               buttonClose={
                 <>
-                  <i className="fa-solid fa-xmark"></i>
+                  <div className="p-4 text-center rounded-full select-none flexc size-full transcenter">
+                    <i className="fa-solid fa-xmark"></i>
+                  </div>
                 </>
               }
+              get={({ menuOpen, setMenuOpen, setIsButtonDisabled }) => {
+                menuOpenMB = menuOpen;
+                setMenuOpenMB = setMenuOpenMB || setMenuOpen;
+                setIsButtonDisabledMB =
+                  setIsButtonDisabledMB || setIsButtonDisabled;
+              }}
               clicked={(samting) => {
-                handleShowIce(theIce.current);
+                handleToggle(theIce.current);
+                handleToggle(theCupCake.current);
               }}
             />
 
+            {menuList == "listIce" && (
+              <div
+                className={`h-[6rem] text-[1rem] w-[15rem] transcenter transall hidden !top-[120%] scale-0 ${
+                  showIce && "!flex flexc gap-10 !scale-100"
+                } 
+              ${menuList == "listIce" && "text-[0.7rem]"}`}
+              >
+                <Button
+                  theRef={thePrevious}
+                  className={`size-[6em]`}
+                  buttonOpen={
+                    <>
+                      <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                        <i className="text-[4em] fa-solid fa-caret-left text-primary"></i>
+                      </div>
+                    </>
+                  }
+                  buttonClose={
+                    <>
+                      <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                        <i className="text-[0.55em] fa-solid fa-caret-left text-primary"></i>
+                      </div>
+                    </>
+                  }
+                />
+
+                <Button
+                  theRef={theNext}
+                  className={`size-[6em]`}
+                  buttonOpen={
+                    <>
+                      <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                        <i className="text-[4em] fa-solid fa-caret-right text-primary"></i>
+                      </div>
+                    </>
+                  }
+                  buttonClose={
+                    <>
+                      <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                        <i className="text-[0.55em] fa-solid fa-caret-right text-primary"></i>
+                      </div>
+                    </>
+                  }
+                />
+              </div>
+            )}
+
             {/* {showIce && ( */}
             <div
-              className={`size-[6rem] transcenter transall hidden !top-[140%] scale-0 ${
-                showIce && "!block !scale-100"
-              }`}
+              className={`h-[6rem] text-[1rem] w-[15rem] transcenter transall hidden !top-[140%] scale-0 ${
+                showIce && "!flex flexc gap-10 !scale-100"
+              } 
+              ${menuList == "listIce" && "!mt-10"}
+              ${menuList == "listIce" && "text-[0.8rem]"}`}
             >
               <Button
-                theRef={theIce}
-                className={`size-full`}
+                theRef={theCupCake}
+                className={`size-[6em]`}
                 buttonOpen={
                   <>
-                    <div className="p-4 text-center bg-white rounded-full select-none flexc size-full transcenter">
+                    <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                      <img
+                        src={cupcake}
+                        alt="LOGONYA"
+                        className="pointer-events-none select-none size-full"
+                      />
+                    </div>
+                  </>
+                }
+                buttonClose={
+                  <>
+                    <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                      <i className="text-[0.55em] fa-solid fa-xmark text-primary"></i>
+                    </div>
+                  </>
+                }
+                get={({ menuOpen, setMenuOpen }) => {
+                  setMenuOpenCupCake = setMenuOpenCupCake || setMenuOpen;
+                }}
+              />
+
+              <Button
+                theRef={theIce}
+                className={`size-[6em]`}
+                buttonOpen={
+                  <>
+                    <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
                       <img
                         src={frappe}
                         alt="LOGONYA"
@@ -90,21 +199,55 @@ function MobileView() {
                 }
                 buttonClose={
                   <>
-                    <div className="p-4 text-center rotate-180 bg-white rounded-full select-none flexc size-full transcenter">
-                      <img
-                        src={frappe}
-                        alt="LOGONYA"
-                        className="pointer-events-none select-none size-full"
-                      />
+                    <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                      <i className="text-[0.55em] fa-solid fa-xmark text-primary"></i>
                     </div>
                   </>
                 }
-                clicked={({ menuOpen, setMenuOpen }) => {
-                  menuOpenIce = menuOpenIce || menuOpen;
+                get={({ menuOpen, setMenuOpen }) => {
                   setMenuOpenIce = setMenuOpenIce || setMenuOpen;
+                }}
+                clicked={() => {
+                  setMenuOpenMB(!menuOpenMB);
+                  menuOpenMB = !menuOpenMB;
+
+                  if (menuOpenMB) {
+                    setTimeout(() => {
+                      setMenuList("idle");
+                      setIsButtonDisabledMB(false);
+                    }, 150);
+                  } else {
+                    setMenuList("listIce");
+                    setIsButtonDisabledMB(true);
+                  }
                 }}
               />
             </div>
+
+            {/* <Button
+              buttonOpen={
+                <>
+                  <div className="p-4 text-center rotate-180 bg-white rounded-full select-none flexc size-full transcenter">
+                    <img
+                      src={frappe}
+                      alt="LOGONYA"
+                      className="pointer-events-none select-none size-full"
+                    />
+                  </div>
+                </>
+              }
+              buttonClose={
+                <>
+                  <div className="p-4 text-center bg-white rounded-full select-none flexc size-full transcenter">
+                    <img
+                      src={frappe}
+                      alt="LOGONYA"
+                      className="pointer-events-none select-none size-full"
+                    />
+                  </div>
+                </>
+              }
+            /> */}
             {/* )} */}
           </div>
           {/* === TOMBOL MENU === */}
