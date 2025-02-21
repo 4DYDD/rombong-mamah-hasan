@@ -22,6 +22,7 @@ function Button({
         setIsButtonDisabled,
         isStarted,
         setIsStarted,
+        handleTouchLeave,
       });
   }, [get]);
 
@@ -57,24 +58,35 @@ function Button({
     setIsStarted(true);
   };
 
-  const handleTouchLeave = (event, ref, delayClick) => {
-    setTimeout(() => {
-      if (isButtonDisabled == true) return;
-      if (isStarted == false) return;
+  const handleTouchLeave = (event, ref, delayClick, force, callback) => {
+    setTimeout(
+      () => {
+        if (!force) {
+          if (isButtonDisabled == true) return;
+          if (isStarted == false) return;
+        }
 
-      // setMenuOpen(false);
+        // setMenuOpen(false);
 
-      animateGoing(ref);
+        animateGoing(ref);
 
-      setIsStarted(false);
-      setIsButtonDisabled(true); // Set tombol disabled
+        if (!force) {
+          setIsStarted(false);
+          setIsButtonDisabled(true); // Set tombol disabled
+        }
 
-      setTimeout(() => {
-        animateEnd(ref);
+        setTimeout(() => {
+          animateEnd(ref);
 
-        setIsButtonDisabled(false); // Aktifkan tombol kembali
-      }, delayClick);
-    }, 100);
+          callback && callback();
+
+          if (!force) {
+            setIsButtonDisabled(false); // Aktifkan tombol kembali
+          }
+        }, delayClick);
+      },
+      force ? 100 : 0
+    );
   };
 
   const handleTouchEnd = (event, ref, delayClick, status) => {
@@ -133,7 +145,7 @@ function Button({
       >
         {/* === TEXTNYA === */}
         <div
-          className={`select-none bg-primary rounded-full size-full flexc flex-col transcenter transall opacity-100 scale-100 ${
+          className={`text-[5em] select-none bg-primary rounded-full size-full flexc flex-col transcenter transall opacity-100 scale-100 ${
             menuOpen && "!opacity-0 !scale-0"
           }`}
         >
@@ -147,7 +159,7 @@ function Button({
 
         {/* === X NYA === */}
         <div
-          className={`text-[5rem] select-none transall bg-primary rounded-full size-full flexc flex-col !ease-in-out transcenter opacity-0 scale-0 ${
+          className={`text-[5em] select-none transall bg-primary rounded-full size-full flexc flex-col !ease-in-out transcenter opacity-0 scale-0 ${
             menuOpen && "!scale-100 !opacity-100"
           }`}
         >

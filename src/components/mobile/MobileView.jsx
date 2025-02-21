@@ -18,6 +18,11 @@ function MobileView() {
   let setMenuOpenCupCake = null;
   let setMenuOpenMB = null;
   let setIsButtonDisabledMB = null;
+  let nextIce = null;
+  let previousIce = null;
+  let myHandleTouchLeave = null;
+  let setIsButtonDisabledNext = null;
+  let setIsButtonDisabledPrevious = null;
 
   const theMenuButton = useRef(null);
   const theIce = useRef(null);
@@ -25,6 +30,8 @@ function MobileView() {
 
   const thePrevious = useRef(null);
   const theNext = useRef(null);
+
+  const IceLibRef = useRef(null);
 
   function munculkan(ref) {
     setShowIce(!showIce);
@@ -75,9 +82,15 @@ function MobileView() {
                   {menuList == "listIce" && (
                     <>
                       <div
-                        className={`p-11 text-center bg-white rounded-full select-none text-primary flexc size-full transall transcenter rotate-0`}
+                        className={`text-center bg-white rounded-full select-none text-primary flexc size-full transall transcenter rotate-0`}
                       >
-                        <IceLibrary />
+                        <IceLibrary
+                          theRef={IceLibRef}
+                          get={({ next, previous }) => {
+                            nextIce = next;
+                            previousIce = previous;
+                          }}
+                        />
                       </div>
                     </>
                   )}
@@ -90,7 +103,13 @@ function MobileView() {
                   </div>
                 </>
               }
-              get={({ menuOpen, setMenuOpen, setIsButtonDisabled }) => {
+              get={({
+                menuOpen,
+                setMenuOpen,
+                setIsButtonDisabled,
+                handleTouchLeave,
+              }) => {
+                myHandleTouchLeave = handleTouchLeave;
                 menuOpenMB = menuOpen;
                 setMenuOpenMB = setMenuOpenMB || setMenuOpen;
                 setIsButtonDisabledMB =
@@ -104,47 +123,81 @@ function MobileView() {
 
             {menuList == "listIce" && (
               <div
-                className={`h-[6rem] text-[1rem] w-[15rem] transcenter transall hidden !top-[120%] scale-0 ${
+                className={`h-[6rem] text-[0.5rem] w-[15rem] transcenter transall hidden !top-[120%] scale-0 ${
                   showIce && "!flex flexc gap-10 !scale-100"
                 } 
               ${menuList == "listIce" && "text-[0.7rem]"}`}
               >
                 <Button
                   theRef={thePrevious}
-                  className={`size-[6em]`}
+                  className={`size-[6em] bg-white`}
                   buttonOpen={
                     <>
                       <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
-                        <i className="text-[4em] fa-solid fa-caret-left text-primary"></i>
+                        <i className="text-[0.7em] fa-solid fa-caret-left text-primary"></i>
                       </div>
                     </>
                   }
                   buttonClose={
                     <>
                       <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
-                        <i className="text-[0.55em] fa-solid fa-caret-left text-primary"></i>
+                        <i className="text-[0.7em] fa-solid fa-caret-left text-primary"></i>
                       </div>
                     </>
                   }
+                  get={({ setIsButtonDisabled }) => {
+                    setIsButtonDisabledPrevious = setIsButtonDisabled;
+                  }}
+                  clicked={() => {
+                    previousIce && previousIce();
+                    setIsButtonDisabledNext(true);
+
+                    myHandleTouchLeave(
+                      null,
+                      [theMenuButton.current],
+                      200,
+                      true,
+                      () => {
+                        setIsButtonDisabledNext(false);
+                      }
+                    );
+                  }}
                 />
 
                 <Button
                   theRef={theNext}
-                  className={`size-[6em]`}
+                  className={`size-[6em] bg-white`}
                   buttonOpen={
                     <>
                       <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
-                        <i className="text-[4em] fa-solid fa-caret-right text-primary"></i>
+                        <i className="text-[0.7em] fa-solid fa-caret-right text-primary"></i>
                       </div>
                     </>
                   }
                   buttonClose={
                     <>
                       <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
-                        <i className="text-[0.55em] fa-solid fa-caret-right text-primary"></i>
+                        <i className="text-[0.7em] fa-solid fa-caret-right text-primary"></i>
                       </div>
                     </>
                   }
+                  get={({ setIsButtonDisabled }) => {
+                    setIsButtonDisabledNext = setIsButtonDisabled;
+                  }}
+                  clicked={() => {
+                    nextIce && nextIce();
+                    setIsButtonDisabledPrevious(true);
+
+                    myHandleTouchLeave(
+                      null,
+                      [theMenuButton.current],
+                      200,
+                      true,
+                      () => {
+                        setIsButtonDisabledPrevious(false);
+                      }
+                    );
+                  }}
                 />
               </div>
             )}
@@ -162,7 +215,7 @@ function MobileView() {
                 className={`size-[6em]`}
                 buttonOpen={
                   <>
-                    <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                    <div className="p-[0.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
                       <img
                         src={cupcake}
                         alt="LOGONYA"
@@ -173,7 +226,7 @@ function MobileView() {
                 }
                 buttonClose={
                   <>
-                    <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                    <div className="p-[0.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
                       <i className="text-[0.55em] fa-solid fa-xmark text-primary"></i>
                     </div>
                   </>
@@ -188,7 +241,7 @@ function MobileView() {
                 className={`size-[6em]`}
                 buttonOpen={
                   <>
-                    <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                    <div className="p-[0.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
                       <img
                         src={frappe}
                         alt="LOGONYA"
@@ -199,7 +252,7 @@ function MobileView() {
                 }
                 buttonClose={
                   <>
-                    <div className="p-[1.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
+                    <div className="p-[0.3em] text-center bg-white rounded-full select-none flexc size-full transcenter">
                       <i className="text-[0.55em] fa-solid fa-xmark text-primary"></i>
                     </div>
                   </>
@@ -224,30 +277,6 @@ function MobileView() {
               />
             </div>
 
-            {/* <Button
-              buttonOpen={
-                <>
-                  <div className="p-4 text-center rotate-180 bg-white rounded-full select-none flexc size-full transcenter">
-                    <img
-                      src={frappe}
-                      alt="LOGONYA"
-                      className="pointer-events-none select-none size-full"
-                    />
-                  </div>
-                </>
-              }
-              buttonClose={
-                <>
-                  <div className="p-4 text-center bg-white rounded-full select-none flexc size-full transcenter">
-                    <img
-                      src={frappe}
-                      alt="LOGONYA"
-                      className="pointer-events-none select-none size-full"
-                    />
-                  </div>
-                </>
-              }
-            /> */}
             {/* )} */}
           </div>
           {/* === TOMBOL MENU === */}
