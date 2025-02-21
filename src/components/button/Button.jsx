@@ -12,6 +12,9 @@ function Button({
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const [isStarted, setIsStarted] = useState(false);
+  // const [changeButton, setChangeButton] = useState("");
+
+  const menuButton = useRef(null);
 
   useEffect(() => {
     if (get !== null)
@@ -25,6 +28,15 @@ function Button({
         handleTouchLeave,
       });
   }, [get]);
+
+  const changeButton = (theClass) => {
+    const refnya = theRef || menuButton;
+    if (menuOpen == false) {
+      refnya.current.classList.add(theClass);
+    } else {
+      refnya.current.classList.remove(theClass);
+    }
+  };
 
   const animateStart = (ref) => {
     ref.forEach((element) => {
@@ -110,6 +122,7 @@ function Button({
         setIsButtonDisabled,
         isStarted,
         setIsStarted,
+        changeButton,
       });
 
     setTimeout(() => {
@@ -118,8 +131,6 @@ function Button({
       setIsButtonDisabled(false); // Aktifkan tombol kembali
     }, delayClick);
   };
-
-  const menuButton = useRef(null);
 
   return (
     <>
@@ -145,7 +156,7 @@ function Button({
       >
         {/* === TEXTNYA === */}
         <div
-          className={`text-[5em] select-none bg-primary rounded-full size-full flexc flex-col transcenter transall opacity-100 scale-100 ${
+          className={`text-[5em] select-none rounded-full size-full flexc flex-col transcenter transall opacity-100 scale-100 ${
             menuOpen && "!opacity-0 !scale-0"
           }`}
         >
@@ -159,7 +170,7 @@ function Button({
 
         {/* === X NYA === */}
         <div
-          className={`text-[5em] select-none transall bg-primary rounded-full size-full flexc flex-col !ease-in-out transcenter opacity-0 scale-0 ${
+          className={`text-[5em] select-none transall rounded-full size-full flexc flex-col !ease-in-out transcenter opacity-0 scale-0 ${
             menuOpen && "!scale-100 !opacity-100"
           }`}
         >

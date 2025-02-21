@@ -8,6 +8,7 @@ import Laptop from "./Laptop";
 import MobileView from "./components/mobile/MobileView";
 
 import brokoli from "./assets/img/brokoli.jpg";
+import LaptopView from "./components/LaptopView";
 
 function App() {
   // const handleShowMenu = (event, ref) => {
@@ -15,21 +16,8 @@ function App() {
   // handleTouchEnd(event, ref, 200, { preventStart: true });
   // };
 
-  return (
-    <>
-      <main className="h-screen bg-gradient-to-b from-light to-secondary to-50%">
-        <Mobile>
-          <MobileView />
-        </Mobile>
-        <Laptop>
-          {/* <MobileView
-            handleTouchStart={handleTouchStart}
-            handleTouchEnd={handleTouchEnd}
-            menuOpen={menuOpen}
-            setMenuOpen={setMenuOpen}
-          /> */}
-
-          <div className="flex-col h-screen px-16 text-3xl font-bold text-center text-white bg-red-500 flexc">
+  {
+    /* <div className="flex-col h-screen px-16 text-3xl font-bold text-center text-white bg-red-500 flexc">
             <span>UNTUK UKURAN WEBSITE INI BELUM KU BUAT, LAGI MALASSS</span>
             <br />
             <br />
@@ -39,7 +27,17 @@ function App() {
               }}
               className="bg-no-repeat bg-cover border-4 border-white rounded-lg bg-center px-[20rem] py-[12rem]"
             ></div>
-          </div>
+          </div> */
+  }
+
+  return (
+    <>
+      <main className="h-screen bg-gradient-to-b from-light to-secondary to-50%">
+        <Mobile>
+          <MobileView />
+        </Mobile>
+        <Laptop>
+          <LaptopView />
         </Laptop>
       </main>
     </>
