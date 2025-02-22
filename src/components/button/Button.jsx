@@ -4,17 +4,22 @@ function Button({
   theRef,
   buttonOpen,
   buttonClose,
+  impactThis = null,
   get = null,
   clicked,
   className,
+  cart = null,
+  children,
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const [isStarted, setIsStarted] = useState(false);
-  // const [changeButton, setChangeButton] = useState("");
 
   const menuButton = useRef(null);
+
+  let isForceDisabled = false;
+  let isForceOpen = false;
 
   useEffect(() => {
     if (get !== null)
@@ -26,8 +31,16 @@ function Button({
         isStarted,
         setIsStarted,
         handleTouchLeave,
+        forceDisabled,
+        forceOpen,
       });
   }, [get]);
+
+  useEffect(() => {
+    if (cart < 1) {
+      setMenuOpen(true);
+    }
+  }, [cart]);
 
   const changeButton = (theClass) => {
     const refnya = theRef || menuButton;
@@ -36,6 +49,16 @@ function Button({
     } else {
       refnya.current.classList.remove(theClass);
     }
+  };
+
+  const forceDisabled = (status) => {
+    if (status == true) isForceDisabled = true;
+    if (status == false) isForceDisabled = false;
+  };
+
+  const forceOpen = (status) => {
+    if (status == true) isForceOpen = true;
+    if (status == false) isForceOpen = false;
   };
 
   const animateStart = (ref) => {
@@ -107,7 +130,9 @@ function Button({
       if (isStarted == false) return;
     }
 
-    setMenuOpen(!menuOpen);
+    if (isForceOpen == false) {
+      setMenuOpen(!menuOpen);
+    }
 
     animateGoing(ref);
 
@@ -123,22 +148,26 @@ function Button({
         isStarted,
         setIsStarted,
         changeButton,
+        forceDisabled,
+        forceOpen,
       });
 
     setTimeout(() => {
       animateEnd(ref);
 
-      setIsButtonDisabled(false); // Aktifkan tombol kembali
+      if (isForceDisabled == false) {
+        setIsButtonDisabled(false); // Aktifkan tombol kembali
+      }
     }, delayClick);
   };
 
   return (
     <>
       {/* <div className="!-top-[50%] transcenter bg-primary text-white rounded-lg shadow w-[14rem] h-[3rem] flexc font-capriola">
-        {isButtonDisabled == true ? (
-          <span>tombol tak bisa di pencet</span>
+        {menuOpen == true ? (
+          <span>menu open</span>
         ) : (
-          <span>tombol bisa di pencet</span>
+          <span>menu tidak open</span>
         )}
       </div> */}
       <button
@@ -160,28 +189,24 @@ function Button({
             menuOpen && "!opacity-0 !scale-0"
           }`}
         >
-          {buttonOpen || (
-            <>
-              <div className="text-4xl">Button Open</div>
-            </>
-          )}
+          {buttonOpen && buttonOpen}
         </div>
         {/* === TEXTNYA === */}
-
+        {children}
         {/* === X NYA === */}
         <div
           className={`text-[5em] select-none transall rounded-full size-full flexc flex-col !ease-in-out transcenter opacity-0 scale-0 ${
             menuOpen && "!scale-100 !opacity-100"
           }`}
         >
-          {buttonClose || (
-            <>
-              <div className="text-4xl">Button Close</div>
-            </>
-          )}
+          {buttonClose && buttonClose}
         </div>
         {/* === X NYA === */}
       </button>
+      {impactThis &&
+        impactThis({
+          menuOpen,
+        })}
     </>
   );
 }

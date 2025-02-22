@@ -34,7 +34,13 @@ function App() {
     <>
       <main className="h-screen bg-gradient-to-b from-light to-secondary to-50%">
         <Mobile>
+          {/* === ADA BUG DI VERSI MOBILENYA === */}
+          {/* === ADA BUG DI VERSI MOBILENYA === */}
+          {/* === ADA BUG DI VERSI MOBILENYA === */}
           <MobileView />
+          {/* === ADA BUG DI VERSI MOBILENYA === */}
+          {/* === ADA BUG DI VERSI MOBILENYA === */}
+          {/* === ADA BUG DI VERSI MOBILENYA === */}
         </Mobile>
         <Laptop>
           <LaptopView />
